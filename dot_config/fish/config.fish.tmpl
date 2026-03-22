@@ -18,6 +18,36 @@ if test -f ~/.config/shell/aliases.sh
     source ~/.config/shell/aliases.sh
 end
 
+# Shared helper functions for interactive use in fish
+function mkd
+    mkdir -p $argv[1]; and cd $argv[1]
+end
+
+function dpsg
+    set -l docker_ps_format 'table {{ printf "{{.ID}}" }}\t{{ printf "{{.Names}}" }}\t{{ printf "{{.Image}}" }}\t{{ printf "{{.Status}}" }}'
+    if test (count $argv) -gt 0
+        docker ps --format "$docker_ps_format" | grep -i "$argv[1]"
+    else
+        docker ps --format "$docker_ps_format"
+    end
+end
+
+function dlog
+    docker logs -f $argv[1]
+end
+
+function dsh
+    docker exec -it $argv[1] sh
+end
+
+function dbash
+    docker exec -it $argv[1] bash 2>/dev/null; or docker exec -it $argv[1] sh
+end
+
+function dins
+    docker inspect $argv[1]
+end
+
 # Initialize Fuzzy Finder key bindings for fish
 if command -q fzf
   if fzf --fish >/dev/null 2>/dev/null
