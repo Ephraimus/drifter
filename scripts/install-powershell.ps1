@@ -1,5 +1,5 @@
 # install-powershell.ps1
-# Drifter — One-command installer for Windows PowerShell
+# Drifter - One-command installer for Windows PowerShell
 #
 # Usage:
 #   irm https://raw.githubusercontent.com/Ephraimus/chezmoi/main/scripts/install-powershell.ps1 | iex
@@ -34,7 +34,7 @@ if (($PSVersionTable.PSEdition -eq 'Core' -and $PSVersionTable.PSVersion.Major -
 
 Write-Host ""
 Write-Host "  ====================================================" -ForegroundColor Cyan
-Write-Host "  🌍 Drifter — Windows One-Command Installer" -ForegroundColor Cyan
+Write-Host "  Drifter - Windows One-Command Installer" -ForegroundColor Cyan
 Write-Host "  Bootstrap URL: $BootstrapUrl" -ForegroundColor Cyan
 Write-Host "  Repo URL     : $DefaultRepoUrl" -ForegroundColor Cyan
 Write-Host "  ====================================================" -ForegroundColor Cyan

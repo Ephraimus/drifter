@@ -126,7 +126,7 @@ $mode = if ($RepoUrl) { 'repo' } else { 'local' }
 
 Write-Host ""
 Write-Host "  ====================================================" -ForegroundColor Cyan
-Write-Host "  🌍 Drifter — Windows PowerShell Bootstrap" -ForegroundColor Cyan
+Write-Host "  Drifter - Windows PowerShell Bootstrap" -ForegroundColor Cyan
 Write-Host "  Target: PowerShell $($PSVersionTable.PSVersion)" -ForegroundColor Cyan
 Write-Host "  Source mode: $mode" -ForegroundColor Cyan
 if ($mode -eq 'repo') {
