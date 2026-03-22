@@ -20,7 +20,13 @@ end
 
 # Initialize Fuzzy Finder key bindings for fish
 if command -q fzf
-  fzf --fish | source
+  if fzf --fish >/dev/null 2>/dev/null
+    fzf --fish | source
+  else if test -f /usr/share/fish/vendor_functions.d/fzf_key_bindings.fish
+    source /usr/share/fish/vendor_functions.d/fzf_key_bindings.fish
+  else if test -f /usr/share/doc/fzf/examples/key-bindings.fish
+    source /usr/share/doc/fzf/examples/key-bindings.fish
+  end
 end
 
 # Initialize smarter cd command (z) for fish
