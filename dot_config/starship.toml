@@ -7,12 +7,12 @@ format = "$username$hostname$directory$git_branch$git_status$cmd_duration$jobs$s
 [username]
 # Always show the username, even if it matches the current logged-in user
 show_always = true
-format = "[$user]($style)@"
+format = "[$user](bold green)[@](dimmed white)"
 
 [hostname]
 # Only show the hostname if we are connected via SSH (keeps local terminal clean)
 ssh_only = true
-format = "[$hostname]($style) "
+format = "[$hostname](bold yellow) "
 style = "bold yellow"
 
 [directory]
