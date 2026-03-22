@@ -14,6 +14,7 @@
 - **Bash:** Основная оболочка для целевых машин. Гарантирует 100% совместимость со всеми POSIX-скриптами ОС (в отличие от Fish/Zsh). Используется как универсальный загрузчик среды.
 - **Ble.sh (Bash Line Editor):** Фреймворк, внедряющий современные механизмы (автодополнения истории по мере ввода, подсветку синтаксиса до выполнения команд) непосредственно в `bash`, превращая его в современную интерактивную среду.
 - **Fish (Опционально):** Рекомендуется к активации только на локальных рабочих станциях (например, WSL среды разработчика), где приоритетом является агрессивный пользовательский интерактив и богатый UX "из коробки", а не POSIX-совместимость.
+- **PowerShell на Windows:** Поддерживаются `PowerShell 7+` и `Windows PowerShell 5.1`. Подробная установка и проверка вынесены в `POWERSHELL.md`.
 
 ### 1.2 Управление конфигурациями (Chezmoi)
 **Chezmoi** выступает единым шаблонизатором и менеджером файлов конфигурации (dotfiles).
@@ -43,10 +44,19 @@
     fish/
       config.fish.tmpl          # Опциональный локальный Fish-конфиг
     starship.toml               # Конфигурация генератора prompt
+  Documents/
+    PowerShell/
+      Microsoft.PowerShell_profile.ps1.tmpl
+                                # Профиль PowerShell 7+
+    WindowsPowerShell/
+      Microsoft.PowerShell_profile.ps1.tmpl
+                                # Профиль Windows PowerShell 5.1
   scripts/
     install.sh                  # Обертка для развертывания Bare Metal (curl-to-bash)
+    install-powershell.ps1      # Обертка для one-command установки PowerShell через raw GitHub
     bootstrap.sh                # Локальный инициализатор зависимостей
     bootstrap-remote.sh         # Сценарий доставки конфигураций по SSH
+    bootstrap-powershell.ps1    # Windows bootstrap через Scoop + chezmoi
 ```
 
 ### 2.1 Единый источник истины (Single Source of Truth)
@@ -84,6 +94,7 @@
 use_fish = false
 use_blesh = false      # Допускает отключение на слабых серверах
 legacy_zsh = true
+use_powershell = true
 ```
 Редактирование данного файла и последующий вызов `chezmoi apply` позволяют точечно управлять поведением пайплайна на конкретном сервере, не внося изменений в глобальный репозиторий.
 
@@ -140,6 +151,7 @@ FZF_DEFAULT_OPTS=--preview 'bat --color=always {} 2>/dev/null || batcat --color=
 ### 6.4. Базовые принципы встроенных утилит навигации
 - **`zoxide`**: Механизм навигации, учитывающий частотностью посещений директорий. Допускает использование предиктивного псевдонима `z proj` вместо полных абсолютных путей. Ускоряет переход по проектам.
 - **`ble.sh`**: Фреймворк Bash Line Editor, обеспечивающий динамическую валидацию пользовательского ввода (подсветка синтаксиса перед выполнением энтерпретатором) и автодополнения истории исполнения, по аналогии с логикой оболочек Zsh-autosuggestions и Fish.
+- **`PSFzf`**: PowerShell-обёртка над `fzf`, обеспечивающая Ctrl+T / Ctrl+R в PowerShell.
 
 ---
 
@@ -300,7 +312,15 @@ cat ./scripts/bootstrap-remote.sh | ssh -o StrictHostKeyChecking=no deploy@host 
 
 ---
 
-### 9.3. `sync-all-remotes.sh` — Массовая синхронизация
+### 9.3. PowerShell на Windows
+
+Все команды установки, one-command сценарий, различия между `PowerShell 7+` и `Windows PowerShell 5.1`, а также команды проверки вынесены в отдельный документ:
+
+`POWERSHELL.md`
+
+---
+
+### 9.4. `sync-all-remotes.sh` — Массовая синхронизация
 
 Используется для применения изменений из Git на все настроенные серверы сразу.
 
