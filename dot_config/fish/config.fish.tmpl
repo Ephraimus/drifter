@@ -20,6 +20,10 @@ end
 
 # Shared helper functions for interactive use in fish
 function mkd
+    if test (count $argv) -lt 1
+        printf '%s\n' 'usage: mkd <dir>' >&2
+        return 1
+    end
     mkdir -p $argv[1]; and cd $argv[1]
 end
 
@@ -33,18 +37,34 @@ function dpsg
 end
 
 function dlog
+    if test (count $argv) -lt 1
+        printf '%s\n' 'usage: dlog <container>' >&2
+        return 1
+    end
     docker logs -f $argv[1]
 end
 
 function dsh
+    if test (count $argv) -lt 1
+        printf '%s\n' 'usage: dsh <container>' >&2
+        return 1
+    end
     docker exec -it $argv[1] sh
 end
 
 function dbash
+    if test (count $argv) -lt 1
+        printf '%s\n' 'usage: dbash <container>' >&2
+        return 1
+    end
     docker exec -it $argv[1] bash 2>/dev/null; or docker exec -it $argv[1] sh
 end
 
 function dins
+    if test (count $argv) -lt 1
+        printf '%s\n' 'usage: dins <container>' >&2
+        return 1
+    end
     docker inspect $argv[1]
 end
 

@@ -27,6 +27,17 @@ if (Test-Path "$HOME\.local\bin") {
   $env:PATH = "$HOME\.local\bin;$env:PATH"
 }
 
+$scoopShims = @(
+  (Join-Path $HOME "scoop\shims"),
+  (Join-Path $env:USERPROFILE "scoop\shims")
+) | Select-Object -Unique
+
+foreach ($shimPath in $scoopShims) {
+  if ($shimPath -and (Test-Path $shimPath) -and ($env:PATH -notlike "*$shimPath*")) {
+    $env:PATH = "$shimPath;$env:PATH"
+  }
+}
+
 # ----- modern CLI aliases -----
 if (Get-Command eza -ErrorAction SilentlyContinue) {
   function ls   { eza --icons=auto --color=auto @args }
@@ -67,7 +78,8 @@ if (Get-Command zoxide -ErrorAction SilentlyContinue) {
 }
 
 # ----- fzf -----
-if (Get-Module -ListAvailable -Name PSFzf -ErrorAction SilentlyContinue) {
+if ((Get-Module -ListAvailable -Name PSFzf -ErrorAction SilentlyContinue) -and
+    (Get-Command fzf -ErrorAction SilentlyContinue)) {
   Import-Module PSFzf
   Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
 }

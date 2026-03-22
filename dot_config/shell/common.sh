@@ -26,26 +26,50 @@ fi
 
 # Utility: Create a directory and immediately `cd` into it
 mkd() {
+  if [ $# -lt 1 ] || [ -z "${1:-}" ]; then
+    printf 'usage: mkd <dir>\n' >&2
+    return 1
+  fi
   mkdir -p "$1" && cd "$1"
 }
 
 # Docker helpers for working with containers by short ID or name
 dpsg() {
-  docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}' | grep -i "${1:-}"
+  if [ $# -gt 0 ] && [ -n "${1:-}" ]; then
+    docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}' | grep -i "$1"
+  else
+    docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}'
+  fi
 }
 
 dlog() {
+  if [ $# -lt 1 ] || [ -z "${1:-}" ]; then
+    printf 'usage: dlog <container>\n' >&2
+    return 1
+  fi
   docker logs -f "$1"
 }
 
 dsh() {
+  if [ $# -lt 1 ] || [ -z "${1:-}" ]; then
+    printf 'usage: dsh <container>\n' >&2
+    return 1
+  fi
   docker exec -it "$1" sh
 }
 
 dbash() {
+  if [ $# -lt 1 ] || [ -z "${1:-}" ]; then
+    printf 'usage: dbash <container>\n' >&2
+    return 1
+  fi
   docker exec -it "$1" bash 2>/dev/null || docker exec -it "$1" sh
 }
 
 dins() {
+  if [ $# -lt 1 ] || [ -z "${1:-}" ]; then
+    printf 'usage: dins <container>\n' >&2
+    return 1
+  fi
   docker inspect "$1"
 }
