@@ -27,14 +27,6 @@
 
 Выберите подходящий сценарий развертывания:
 
-### 🪟 Windows + PowerShell
-```powershell
-irm https://raw.githubusercontent.com/Ephraimus/chezmoi/main/scripts/install-powershell.ps1 | iex
-```
-
-Подробная инструкция и команды проверки:
-[POWERSHELL.md](POWERSHELL.md)
-
 ### 👑 Установка одной командой (Bare Metal / Чистая машина)
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Ephraimus/chezmoi/main/scripts/install.sh)"
@@ -56,6 +48,14 @@ cd ./scripts
 ```bash
 cat ./scripts/bootstrap-remote.sh | ssh user@host 'bash -s -- --repo-url https://github.com/Ephraimus/chezmoi.git --repo-branch main'
 ```
+
+### 🪟 Windows + PowerShell
+```powershell
+irm https://raw.githubusercontent.com/Ephraimus/chezmoi/main/scripts/install-powershell.ps1 | iex
+```
+
+Подробная инструкция и команды проверки:
+[POWERSHELL.md](POWERSHELL.md)
 
 ---
 
