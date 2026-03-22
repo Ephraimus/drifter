@@ -98,3 +98,4 @@ Microsoft.PowerShell_profile.legacy.ps1
 
 - Если открыто старое окно PowerShell, после установки лучше открыть новую сессию.
 - Для Windows Terminal рекомендуется сделать `PowerShell 7` профилем по умолчанию, но Windows PowerShell 5.1 тоже поддерживается.
+- **Warning:** В PowerShell имена `gc`, `gp` и `gl` по умолчанию уже заняты встроенными alias (`Get-Content`, `Get-ItemProperty`, `Get-Location`). Поэтому профиль Drifter сначала удаляет эти alias, а затем объявляет одноимённые git-функции.

@@ -56,6 +56,12 @@ if (Get-Command bat -ErrorAction SilentlyContinue) {
 }
 
 # ----- git shortcuts -----
+foreach ($name in @('gc', 'gp', 'gl')) {
+  if (Test-Path "Alias:$name") {
+    Remove-Item "Alias:$name" -Force
+  }
+}
+
 function gs  { git status -sb @args }
 function ga  { git add @args }
 function gc  { git commit @args }
