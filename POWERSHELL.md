@@ -32,6 +32,7 @@ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 - Ставит модуль `PSFzf` для `Ctrl+T` и `Ctrl+R`.
 - Сохраняет существующий профиль текущего PowerShell в `Microsoft.PowerShell_profile.legacy.ps1`.
 - Применяет конфиги через `chezmoi`, а не копирует шаблоны вручную.
+- Если `chezmoi` уже был инициализирован раньше, bootstrap обновляет существующий source через `chezmoi update --init`, чтобы не оставаться на старой локальной версии репозитория.
 
 ## Проверка установки
 

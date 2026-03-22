@@ -98,7 +98,15 @@ function Apply-RepoSource {
     [string]$Branch
   )
 
-  & chezmoi init --apply --branch $Branch $Url
+  $chezmoiSourceDir = Join-Path $HOME '.local\share\chezmoi'
+
+  if (Test-Path (Join-Path $chezmoiSourceDir '.git')) {
+    Write-Host "  Existing chezmoi source detected, running chezmoi update --init ..." -ForegroundColor DarkGray
+    & chezmoi update --init -v
+  } else {
+    Write-Host "  Initializing chezmoi source from remote repository ..." -ForegroundColor DarkGray
+    & chezmoi init --apply --branch $Branch $Url
+  }
 }
 
 function Test-IsWindowsHost {
