@@ -1,0 +1,6 @@
+[data]
+use_fish = false
+legacy_bash = true
+legacy_zsh = true
+use_blesh = true
+machine_role = "default"

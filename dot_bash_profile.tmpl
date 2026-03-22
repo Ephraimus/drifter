@@ -1,0 +1,3 @@
+# Load legacy profile first, then the unified bashrc.
+[ -f "$HOME/.bash_profile.legacy" ] && . "$HOME/.bash_profile.legacy"
+[ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"

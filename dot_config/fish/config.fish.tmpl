@@ -1,0 +1,36 @@
+{{- if .use_fish | default false }}
+# Ensure ~/.local/bin is in PATH for user-installed binaries
+set -gx PATH $HOME/.local/bin $PATH
+
+# Load centralized environment variables natively
+if test -f ~/.config/shell/env.list
+    for line in (cat ~/.config/shell/env.list)
+        # Ignore empty lines and lines starting with '#'
+        if test -n "$line"; and not string match -q '#*' "$line"
+            set -l kv (string split -m 1 '=' $line)
+            set -gx $kv[1] $kv[2]
+        end
+    end
+end
+
+# Load centralized aliases (fish is compatible with basic bash alias syntax)
+if test -f ~/.config/shell/aliases.sh
+    source ~/.config/shell/aliases.sh
+end
+
+# Initialize Fuzzy Finder key bindings for fish
+if command -q fzf
+  fzf --fish | source
+end
+
+# Initialize smarter cd command (z) for fish
+if command -q zoxide
+  zoxide init fish | source
+end
+
+# Initialize the cross-shell customizable prompt
+if command -q starship
+  set -gx STARSHIP_CONFIG $HOME/.config/starship.toml
+  starship init fish | source
+end
+{{- end }}

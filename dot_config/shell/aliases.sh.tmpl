@@ -1,0 +1,39 @@
+# Eza (modern ls): Provides colorful, icon-rich directory listings
+{{- if lookPath "eza" }}
+alias ls='eza --icons=auto --color=auto'          # Basic eza instead of ls
+alias ll='eza -lh --icons=auto'                   # Long format, human readable sizes
+alias la='eza -la --icons=auto'                   # Long format, including hidden files
+alias l='eza -F --icons=auto'                     # Append indicator (one of */=>@|) to entries
+alias tree='eza --tree --icons=auto'              # Tree view directory structure
+{{- else }}
+alias ll='ls -lah'                                # Long format, all files, human readable
+alias la='ls -A'                                  # Almost all (do not list implied . and ..)
+alias l='ls -CF'                                  # List entries by columns
+{{- end }}
+
+# Bat (modern cat): Provides syntax highlighting and git integration
+{{- if lookPath "bat" }}
+alias cat='bat --paging=never'                    # Use bat instead of cat, without paging
+{{- else if lookPath "batcat" }}
+alias bat='batcat'                                # Alias batcat to bat on Debian/Ubuntu
+alias cat='batcat --paging=never'                 # Use batcat instead of cat, without paging
+{{- end }}
+
+# fd fallback for Ubuntu (fd is called fdfind in apt)
+{{- if lookPath "fdfind" }}
+{{- if not (lookPath "fd") }}
+alias fd='fdfind'                                 # Alias fdfind to fd
+{{- end }}
+{{- end }}
+
+# Git shortcuts
+alias gs='git status -sb'                         # Short git status with branch info
+alias ga='git add'                                # Quick git add
+alias gc='git commit'                             # Quick git commit
+alias gca='git commit --amend'                    # Amend the last commit (edit message or add files)
+alias gp='git push'                               # Quick git push
+alias gl='git pull'                               # Quick git pull
+
+# Editor and Utilities
+alias v='vim'                                     # Quick vim access
+alias c='clear'                                   # Quick terminal clear

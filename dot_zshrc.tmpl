@@ -1,0 +1,40 @@
+# ----- recursion guard -----
+# Prevents infinite sourcing loop when .zshrc.legacy itself sources .zshrc back.
+[[ -n "${_DRIFTER_ZSHRC_LOADED:-}" ]] && return
+export _DRIFTER_ZSHRC_LOADED=1
+
+# ----- legacy -----
+# Source the previous .zshrc only if it is NOT a Drifter-generated file.
+# We detect Drifter files by the presence of 'shell/common.sh' — present in ALL versions.
+# Sourcing our own old config causes infinite recursion via its own .zshrc.legacy call.
+{{- if .legacy_zsh | default true }}
+if [ -f "$HOME/.zshrc.legacy" ]; then
+  if ! grep -q "shell/common\.sh" "$HOME/.zshrc.legacy" 2>/dev/null; then
+    source "$HOME/.zshrc.legacy"
+  fi
+fi
+{{- end }}
+
+# ----- common shared config -----
+# Shared env variables and aliases that are POSIX-safe.
+[ -f "$HOME/.config/shell/common.sh" ] && source "$HOME/.config/shell/common.sh"
+
+# ----- fzf -----
+# Initialize Fuzzy Finder key bindings for zsh.
+# --zsh flag requires fzf 0.48+. Fall back to the legacy key-bindings path for older installs.
+if command -v fzf >/dev/null 2>&1; then
+  if fzf --zsh >/dev/null 2>&1; then
+    source <(fzf --zsh)
+  elif [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
+    source /usr/share/doc/fzf/examples/key-bindings.zsh
+  fi
+fi
+
+# ----- zoxide -----
+# Initialize smarter cd command (z) for zsh
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
+
+# ----- starship -----
+# Starship should stay last to own the prompt successfully.
+export STARSHIP_CONFIG="$HOME/.config/starship.toml"
+command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"

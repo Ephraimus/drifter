@@ -1,0 +1,42 @@
+# ----- legacy -----
+# Source the old local .bashrc if it exists, to ensure user's previous custom scripts keep working
+{{- if .legacy_bash | default true }}
+[ -f "$HOME/.bashrc.legacy" ] && . "$HOME/.bashrc.legacy"
+{{- end }}
+
+# ----- common shared config -----
+# Source the unified shell environment variables and functions
+[ -f "$HOME/.config/shell/common.sh" ] && . "$HOME/.config/shell/common.sh"
+
+# ----- bash completion -----
+# Enable programmable completion features for bash (e.g. for git, apt, etc)
+if [ -n "$PS1" ]; then
+  if [ -z "${BASH_COMPLETION_VERSINFO:-}" ] && [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+# ----- ble.sh -----
+# Bash Line Editor: Provides syntax highlighting, auto-suggestions, and vim modes in bash
+{{- if .use_blesh | default true }}
+if [ -f "$HOME/.local/share/blesh/ble.sh" ]; then
+  source "$HOME/.local/share/blesh/ble.sh"
+elif [ -f "$HOME/.local/share/blesh/out/ble.sh" ]; then
+  source "$HOME/.local/share/blesh/out/ble.sh"
+fi
+{{- end }}
+
+# ----- fzf -----
+# Initialize Fuzzy Finder key bindings and completion for bash
+command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
+
+# ----- zoxide -----
+# Initialize smarter cd command (z) that remembers your most used directories
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
+
+# ----- starship -----
+# Initialize the cross-shell customizable prompt exactly at the end
+export STARSHIP_CONFIG="$HOME/.config/starship.toml"
+command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"

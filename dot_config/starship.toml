@@ -1,0 +1,66 @@
+"$schema" = "https://starship.rs/config-schema.json"
+# Do not add a blank line between prompts
+add_newline = false
+# Define the exact order of modules in the prompt string
+format = "$username$hostname$directory$git_branch$git_status$cmd_duration$jobs$sudo$status$line_break$character"
+
+[username]
+# Always show the username, even if it matches the current logged-in user
+show_always = true
+format = "[$user]($style)@"
+
+[hostname]
+# Only show the hostname if we are connected via SSH (keeps local terminal clean)
+ssh_only = true
+format = "[$hostname]($style) "
+style = "bold yellow"
+
+[directory]
+# Only show the last 4 directories in the path
+truncation_length = 4
+# Truncate paths to the root of the git repository if we are inside one
+truncate_to_repo = true
+
+[git_branch]
+# Display the current git branch with a branch icon
+format = "[$symbol$branch]($style) "
+symbol = " "
+
+[git_status]
+# Display git status (added, modified, deleted)
+format = "([$all_status$ahead_behind]($style) )"
+
+[cmd_duration]
+# Show how long a command took to execute (only if it took more than 500ms)
+min_time = 500
+format = "[${duration}]($style) "
+
+[shell]
+# Show which shell is currently active (useful when switching between bash/zsh/fish)
+disabled = false
+bash_indicator = "bash "
+zsh_indicator = "zsh "
+fish_indicator = "fish "
+
+[character]
+# The prompt character itself (e.g., ❯)
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+
+[status]
+# Show the numeric exit code of the last command, but ONLY if it failed (non-zero exit)
+disabled = false
+format = "[✘ $int]($style) "
+style = "bold red"
+
+[sudo]
+# Show a lightning icon if the current user session has sudo privileges without root explicit login
+disabled = false
+format = "[$symbol]($style) "
+symbol = "⚡ "
+style = "bold red"
+
+[jobs]
+# Show a star icon if there are active background jobs (e.g. suspended via Ctrl+Z)
+symbol = "✦ "
+style = "bold blue"
