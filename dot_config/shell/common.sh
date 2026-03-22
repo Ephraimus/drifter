@@ -28,3 +28,24 @@ fi
 mkd() {
   mkdir -p "$1" && cd "$1"
 }
+
+# Docker helpers for working with containers by short ID or name
+dpsg() {
+  docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}' | grep -i "${1:-}"
+}
+
+dlog() {
+  docker logs -f "$1"
+}
+
+dsh() {
+  docker exec -it "$1" sh
+}
+
+dbash() {
+  docker exec -it "$1" bash 2>/dev/null || docker exec -it "$1" sh
+}
+
+dins() {
+  docker inspect "$1"
+}

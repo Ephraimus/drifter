@@ -108,5 +108,6 @@ chezmoi update
 
 ## 📚 Документация
 - [Architecture & Deep Dive (ADR)](ARCHITECTURE.md) - Решения под капотом: технические подробности сбросов, миграции и устройство шаблонов.
+- [Commands Cheat Sheet](COMMANDS.md) - Алиасы и shell-функции, которые ставит Drifter.
 - [PowerShell Guide](POWERSHELL.md) - Установка на Windows, профили PowerShell и команды проверки.
 - [Chezmoi Reference](https://www.chezmoi.io/) - Документация шаблонизатора.

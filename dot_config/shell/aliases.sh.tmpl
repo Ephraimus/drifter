@@ -26,6 +26,10 @@ alias fd='fdfind'                                 # Alias fdfind to fd
 {{- end }}
 {{- end }}
 
+# Navigation shortcuts
+alias ..='cd ..'                                  # Go up one directory
+alias ...='cd ../..'                              # Go up two directories
+
 # Git shortcuts
 alias gs='git status -sb'                         # Short git status with branch info
 alias ga='git add'                                # Quick git add
@@ -33,7 +37,22 @@ alias gc='git commit'                             # Quick git commit
 alias gca='git commit --amend'                    # Amend the last commit (edit message or add files)
 alias gp='git push'                               # Quick git push
 alias gl='git pull'                               # Quick git pull
+alias gco='git checkout'                          # Switch branches or restore files
+alias gb='git branch'                             # List, create, or delete branches
+alias gd='git diff'                               # Show unstaged changes
+alias glog='git log --oneline --graph --decorate -20' # Compact recent git history
+
+# Docker shortcuts
+alias d='docker'                                  # Short docker command
+alias dc='docker compose'                         # Short docker compose command
+alias dps='docker ps'                             # List running containers
+alias dlogf='docker logs -f'                      # Follow container logs
+alias dex='docker exec -it'                       # Interactive shell into a container
+alias dcud='docker compose up -d'                 # Start compose services in detached mode
+alias dcd='docker compose down'                   # Stop and remove compose services
+alias dclf='docker compose logs -f'               # Follow compose logs
 
 # Editor and Utilities
 alias v='vim'                                     # Quick vim access
 alias c='clear'                                   # Quick terminal clear
+alias myip='curl -s ifconfig.me'                  # Show current public IP
