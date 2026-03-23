@@ -36,9 +36,9 @@ mkd() {
 # Docker helpers for working with containers by short ID or name
 dpsg() {
   if [ $# -gt 0 ] && [ -n "${1:-}" ]; then
-    docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}' | grep -i "$1"
+    docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Ports}}\t{{.Image}}\t{{.Status}}' | grep -i "$1"
   else
-    docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}'
+    docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Ports}}\t{{.Image}}\t{{.Status}}'
   fi
 }
 

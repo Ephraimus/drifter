@@ -28,7 +28,7 @@ function mkd
 end
 
 function dpsg
-    set -l docker_ps_format 'table {{ printf "{{.ID}}" }}\t{{ printf "{{.Names}}" }}\t{{ printf "{{.Image}}" }}\t{{ printf "{{.Status}}" }}'
+    set -l docker_ps_format 'table {{ printf "{{.ID}}" }}\t{{ printf "{{.Names}}" }}\t{{ printf "{{.Ports}}" }}\t{{ printf "{{.Image}}" }}\t{{ printf "{{.Status}}" }}'
     if test (count $argv) -gt 0
         docker ps --format "$docker_ps_format" | grep -i "$argv[1]"
     else
