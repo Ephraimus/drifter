@@ -15,6 +15,8 @@ SKIP_RESET=false
 RESET_MODE="soft"
 ASSUME_YES=false
 SET_LOGIN_SHELL="skip"
+LOGIN_SHELL_PATH=""
+LOGIN_SHELL_STATUS="not-requested"
 REPO_URL=""
 REPO_BRANCH=""
 MODE="local"
@@ -350,17 +352,25 @@ set_default_shell_if_requested() {
 
   local shell_path
   shell_path="$(command -v "$SET_LOGIN_SHELL" || true)"
+  LOGIN_SHELL_PATH="$shell_path"
   [ -n "$shell_path" ] || die "Requested shell is not installed: $SET_LOGIN_SHELL"
 
   if [ ! -r /etc/shells ] || ! grep -qx "$shell_path" /etc/shells; then
+    LOGIN_SHELL_STATUS="missing-in-etc-shells"
     warn "$shell_path is not present in /etc/shells. Skipping chsh."
     return 0
   fi
 
   if command_exists chsh; then
     log "Changing login shell to $shell_path"
-    chsh -s "$shell_path" || warn "chsh failed; keep current login shell"
+    if chsh -s "$shell_path"; then
+      LOGIN_SHELL_STATUS="changed"
+    else
+      LOGIN_SHELL_STATUS="chsh-failed"
+      warn "chsh failed; keep current login shell"
+    fi
   else
+    LOGIN_SHELL_STATUS="chsh-missing"
     warn "chsh not available; keep current login shell"
   fi
 }
@@ -384,6 +394,15 @@ Next steps:
   3. If using Windows Terminal, make sure your profile uses a Nerd Font.
   4. If anything looks wrong, restore files from ~/.shell-migration-backup.
 REPORT
+
+  if [ "$SET_LOGIN_SHELL" != "skip" ] && [ "$LOGIN_SHELL_STATUS" != "changed" ] && [ -n "$LOGIN_SHELL_PATH" ]; then
+    cat <<REPORT
+
+Login shell was not changed automatically.
+Run manually:
+  chsh -s "$LOGIN_SHELL_PATH"
+REPORT
+  fi
 }
 
 main() {
