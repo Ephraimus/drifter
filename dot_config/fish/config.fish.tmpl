@@ -18,6 +18,11 @@ if test -f ~/.config/shell/aliases.sh
     source ~/.config/shell/aliases.sh
 end
 
+# Skip prompt and keybinding initialization for non-interactive fish sessions.
+if not status is-interactive
+    return
+end
+
 # Shared helper functions for interactive use in fish
 function mkd
     if test (count $argv) -lt 1

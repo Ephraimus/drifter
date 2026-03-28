@@ -19,6 +19,10 @@ fi
 # Shared env variables and aliases that are POSIX-safe.
 [ -f "$HOME/.config/shell/common.sh" ] && source "$HOME/.config/shell/common.sh"
 
+# ----- interactive shell guard -----
+# Skip prompt and keybinding initialization for non-interactive shells.
+[[ -o interactive ]] || return
+
 # ----- fzf -----
 # Initialize Fuzzy Finder key bindings for zsh.
 # --zsh flag requires fzf 0.48+. Fall back to the legacy key-bindings path for older installs.

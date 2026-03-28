@@ -8,14 +8,19 @@
 # Source the unified shell environment variables and functions
 [ -f "$HOME/.config/shell/common.sh" ] && . "$HOME/.config/shell/common.sh"
 
+# ----- interactive shell guard -----
+# Skip prompt and keybinding initialization for non-interactive shells.
+case $- in
+  *i*) ;;
+  *) return ;;
+esac
+
 # ----- bash completion -----
 # Enable programmable completion features for bash (e.g. for git, apt, etc)
-if [ -n "$PS1" ]; then
-  if [ -z "${BASH_COMPLETION_VERSINFO:-}" ] && [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+if [ -z "${BASH_COMPLETION_VERSINFO:-}" ] && [ -f /usr/share/bash-completion/bash_completion ]; then
+  . /usr/share/bash-completion/bash_completion
+elif [ -f /etc/bash_completion ]; then
+  . /etc/bash_completion
 fi
 
 # ----- ble.sh -----
@@ -29,8 +34,16 @@ fi
 {{- end }}
 
 # ----- fzf -----
-# Initialize Fuzzy Finder key bindings and completion for bash
-command -v fzf >/dev/null 2>&1 && eval "$(fzf --bash)"
+# Initialize Fuzzy Finder key bindings and completion for bash.
+# --bash requires fzf 0.48+. Fall back to the legacy completion/key-binding scripts.
+if command -v fzf >/dev/null 2>&1; then
+  if fzf --bash >/dev/null 2>&1; then
+    eval "$(fzf --bash)"
+  else
+    [ -f /usr/share/bash-completion/completions/fzf ] && . /usr/share/bash-completion/completions/fzf
+    [ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && . /usr/share/doc/fzf/examples/key-bindings.bash
+  fi
+fi
 
 # ----- zoxide -----
 # Initialize smarter cd command (z) that remembers your most used directories
